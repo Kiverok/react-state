@@ -6,15 +6,19 @@ import Select from 'react-select';
 export class BreedSelect extends Component {
     state = {
         breeds: [],
-        error: null
+        isLoading: false,
+        error: null,
     };
 
     async componentDidMount() {
         try {
+            this.setState({isLoading: true})
             const breeds = await fetchBreeds();
 this.setState({ breeds });
-        } catch (error) {
+        } catch  {
             this.setState({error: "Щось пішло не так!"});
+        } finally {
+            this.setState({ isLoading: false })
         }
     }
 
@@ -25,17 +29,19 @@ this.setState({ breeds });
         }));
     };
 
+    handleChange = option => {
+        this.props.onSelect(option.value);
+    };
+
     render() {
-        const { error } = this.state;
+        const { error, isLoading } = this.state;
         const options = this.makeOptions();
         
         return <div>
             <Select 
             options={options}
-            onChange={option => {
-                console.log(option);
-            }}
-            
+            onChange={this.handleChange}
+            isLoading={isLoading}
             />
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
