@@ -6,19 +6,29 @@ import Select from 'react-select';
 export class BreedSelect extends Component {
     state = {
         breeds: [],
+        error: null
     };
 
     async componentDidMount() {
         try {
             const breeds = await fetchBreeds();
 this.setState({ breeds });
-        } catch (error) {}
+        } catch (error) {
+            this.setState({error: "Щось пішло не так!"});
+        }
     }
-    render() {
-        const options = this.state.breeds.map(breed => ({
+
+    makeOptions = () => {
+        return this.state.breeds.map(breed => ({
             value: breed.id,
             label: breed.name
-        }))
+        }));
+    };
+
+    render() {
+        const { error } = this.state;
+        const options = this.makeOptions();
+        
         return <div>
             <Select 
             options={options}
@@ -27,6 +37,7 @@ this.setState({ breeds });
             }}
             
             />
+            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     }
 }
