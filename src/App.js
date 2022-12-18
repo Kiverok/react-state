@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { fetchDogByBreed } from "./api";
 import { BreedSelect } from "./components/BreedSelect";
+import { Dog } from "./components/Dog";
 
 export class App extends Component {
   state = {
@@ -27,7 +28,7 @@ export class App extends Component {
   return (
     <div className="App">
       <BreedSelect onSelect={this.selectBreed} />
-      {dog && <img src={this.state.dog.url} alt="" />}
+      {dog && !isLoading && <Dog dog={dog} />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {isLoading && <div>LOADING...</div>}
     </div>
