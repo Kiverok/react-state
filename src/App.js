@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { fetchDogByBreed } from "./api";
 import { BreedSelect } from "./components/BreedSelect";
 import { Dog } from "./components/Dog";
+import { DogSkeleton } from "./components/DogSkeleton";
 
 export class App extends Component {
   state = {
@@ -12,7 +13,7 @@ export class App extends Component {
 
   selectBreed = async breedId => {
     try {
-      this.setState({isLoading: true})
+      this.setState({isLoading: true, error: null})
       const dog = await fetchDogByBreed(breedId);
       this.setState({ dog });
     } catch {
@@ -30,7 +31,9 @@ export class App extends Component {
       <BreedSelect onSelect={this.selectBreed} />
       {dog && !isLoading && <Dog dog={dog} />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {isLoading && <div>LOADING...</div>}
+      {isLoading && (
+        <DogSkeleton/>
+      )}
     </div>
   )}
 }
