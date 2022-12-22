@@ -1,5 +1,6 @@
-import React, { Component } from "react";
 import { fetchDogByBreed } from "./api";
+import React, { Component } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 import { BreedSelect } from "./components/BreedSelect";
 import { Dog } from "./components/Dog";
 import { DogSkeleton } from "./components/DogSkeleton";
@@ -19,7 +20,10 @@ export class App extends Component {
     } catch {
       this.setState({
         error: "Помилка, попробуйте ще раз!"
-      })
+      });
+      toast.error(
+        'Помилка, попробуйте ще раз!'
+      );
     } finally {
       this.setState({ isLoading: false});
     }
@@ -31,11 +35,11 @@ export class App extends Component {
       <BreedSelect onSelect={this.selectBreed} />
       {dog && !isLoading && <Dog dog={dog} />}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {isLoading && (
-        <DogSkeleton/>
-      )}
+      {isLoading && <DogSkeleton />}    
+      <Toaster position="bottom-right"/>
     </div>
-  )}
+  );
+}
 }
 
 export default App;
