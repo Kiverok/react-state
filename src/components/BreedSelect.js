@@ -2,6 +2,9 @@ import {  useEffect, useState, useMemo } from "react";
 import { fetchBreeds } from "../api";
 import Select from 'react-select';
 
+
+const ERROR_MESSAGE = "Щось пішло не так!"
+
 export const BreedSelect = ({ onSelect }) => {
     const [breeds, setBreeds] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,14 +17,11 @@ export const BreedSelect = ({ onSelect }) => {
                 const breeds = await fetchBreeds();
                 setBreeds(breeds)
             } catch {
-                setError(
-                    "Щось пішло не так!"
-                );
+                setError(ERROR_MESSAGE);
             } finally {
                 setIsLoading(false);
             }
         }
-
         getBreeds();
     }, []);
 
